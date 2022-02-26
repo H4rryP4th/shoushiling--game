@@ -1,0 +1,157 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suit Game</title>
+    <style>
+        :root {
+            box-sizing: border-box;
+            font-family: cursive;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #app {
+            height: 100vh;
+        }
+
+        .summary {
+            margin: 0 auto;
+            border: 3px solid blanchedalmond;
+            width: 400px;
+            height: 400px;
+            text-align: center;
+        }
+
+        .games {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .option {
+            width: 10%;
+            margin: 10px 15px;
+            padding: 15px;
+            background-color: bisque;
+            text-align: center;
+            font-size: 30px;
+        }
+
+
+        .option:hover {
+            transition: cubic-bezier(0.075, 0.82, 0.165, 1) ease-in-out;
+            -webkit-transform: scale(105%);
+            transform: scale(4deg);
+            cursor: pointer;
+            background-color: coral;
+        }
+
+        #inGame{
+            color: crimson;
+        }
+        
+        #inGame img, #result img{
+            width: 20%;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="summary">
+            <h1 class="title">Match Result</h1>
+            <h1 id ="inGame"></h1>
+            <h1 id ="result"></h1>
+        </div>
+        <div class="games">
+            <div class="option" onclick="pickOption('🖐')">🖐</div>
+            <div class="option" onclick="pickOption('✌')">✌</div>
+            <div class="option" onclick="pickOption('✊')">✊</div>
+        </div>
+    </div>
+</body>
+    <script>
+        class Start{
+            // default property
+            constructor(){
+                this.playerName = '👨🏽‍🤝‍👨🏽Player👨🏽‍🤝‍👨🏽';
+                this.botName = '🤖Robot🤖';
+                this.playerOption;
+                this.botOption;
+                this.winner = ''
+            }
+            // gettter & setter
+            get getBotOption(){
+                return this.botOption;
+            }
+            set setBotOption(option){
+                this.botOption = option;
+            }
+            get getPlayerOption(){
+                return this.playerOption;
+            }
+            set setPlayerOption(option){
+                this.playerOption = option;
+            }
+            // method
+            botBrain(){
+                const option = ['🖐', '✌', '✊'];
+                const bot = option[Math.floor(Math.random() * option.length)];
+                return bot;
+            }
+
+            winCalculation(){
+                if(this.botOption === '🖐' && this.playerOption === '✌'){
+                    return this.winner = this.playerName;
+                }else if(this.botOption === '🖐' && this.playerOption === '✊'){
+                    return this.winner = this.botName;
+                }else if(this.botOption === '✌' && this.playerOption === '🖐'){
+                    return this.winner = this.botName;
+                }else if(this.botOption === '✌' && this.playerOption === '✊'){
+                    return this.winner = this.playerName
+                }else if(this.botOption === '✊' && this.playerOption === '🖐'){
+                    return this.winner = this.playerName;
+                }else if(this.botOption === '✊' && this.playerOption === '✌'){
+                    return this.winner = this.botName;
+                }else{
+                    return this.winner = "SERI";
+                }
+            }
+            matchResult(){
+                if(this.winner !== 'DRAW'){
+                    return `${this.winner} WINNER!`;
+                }else{
+                    return `OMG ${this.winner}, no one to wins 😔`;
+                }
+            }
+        }
+
+        function pickOption(data){
+            const start = new Start();
+            start.setPlayerOption = data;
+            start.setBotOption = start.botBrain();
+            start.winCalculation();
+
+            const inGame = document.getElementById('inGame');
+            const result = document.getElementById('result');
+            
+            
+            inGame.textContent = '.......';
+            result.textContent = '......';
+
+            setTimeout(() => {
+                inGame.textContent = `${start.getPlayerOption} VS ${start.getBotOption}`;
+                result.textContent = start.matchResult();
+            }, 1000);
+
+        }
+    </script>
+</html>
